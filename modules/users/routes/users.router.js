@@ -18,11 +18,23 @@ router.get(
   users.findAllAdmin
 );
 
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  users.findOneUser
+);
+
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  users.deleteOneUser
+);
+
 router.patch(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  validatorHandler(getUsersSchema, "params"),
-  validatorHandler(updateUsersSchema, "body"),
+  // validatorHandler(getUsersSchema, "params"),
+  // validatorHandler(updateUsersSchema, "body"),
   users.update
 );
 
