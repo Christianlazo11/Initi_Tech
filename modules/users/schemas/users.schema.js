@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 const id = Joi.string().uuid();
 const full_name = Joi.string();
@@ -14,6 +14,7 @@ const studies_level = Joi.string();
 const address = Joi.string();
 const user_name = Joi.string();
 const password = Joi.string();
+const avatar = Joi.string();
 const date_activation = Joi.string();
 const creation_date = Joi.string();
 
@@ -26,18 +27,19 @@ const createUsersSchema = Joi.object({
 
 const updateUsersSchema = Joi.object({
   id: id.required(),
-  document_type: document_type.allow(''),
-  identification_number: identification_number.allow(''),
-  email: email.allow(''),
-  cellphone: cellphone.allow(''),
-  role: role.allow(''),
-  active: active.allow(''),
-  country: country.allow(''),
-  dev_level: dev_level.allow(''),
-  studies_level: studies_level.allow(''),
-  address: address.allow(''),
-  user_name: user_name.allow(''),
-  password: password.allow(''),
+  document_type: document_type.allow(""),
+  identification_number: identification_number.allow(""),
+  email: email.allow(""),
+  cellphone: cellphone.allow(""),
+  role: role.allow(""),
+  active: active.allow(""),
+  country: country.allow(""),
+  dev_level: dev_level.allow(""),
+  studies_level: studies_level.allow(""),
+  address: address.allow(""),
+  user_name: user_name.allow(""),
+  password: password.allow(""),
+  avatar: avatar.allow(""),
 });
 
 module.exports = {

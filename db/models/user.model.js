@@ -1,6 +1,6 @@
-const { Model, DataTypes, Sequelize } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require("sequelize");
 
-const USERS_TABLE = 'users';
+const USERS_TABLE = "users";
 
 const UsersSchema = {
   id: {
@@ -38,7 +38,7 @@ const UsersSchema = {
     allowNull: true,
     type: DataTypes.STRING,
     unique: false,
-    defaultValue: 'candidate',
+    defaultValue: "candidate",
   },
   active: {
     allowNull: true,
@@ -75,15 +75,19 @@ const UsersSchema = {
     allowNull: true,
     type: DataTypes.STRING,
   },
+  avatar: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   dateActivation: {
     allowNull: true,
     type: DataTypes.DATE,
-    field: 'date_activation',
+    field: "date_activation",
   },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'creation_date',
+    field: "creation_date",
     defaultValue: Sequelize.NOW,
   },
 };
@@ -94,7 +98,7 @@ class User extends Model {
     return {
       sequelize,
       tableName: USERS_TABLE,
-      modelName: 'User',
+      modelName: "User",
       timestamps: false,
     };
   }

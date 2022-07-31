@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const USERS_TABLE = 'users';
+  const USERS_TABLE = "users";
 
   const usersSchema = {
     id: {
@@ -45,6 +45,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     password: {
+      type: Sequelize.STRING,
+    },
+    avatar: {
       type: Sequelize.STRING,
     },
     date_activation: {

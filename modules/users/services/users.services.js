@@ -2,6 +2,10 @@ const { sendEmail } = require("../../../utils/nodemailer/configMailer");
 const boom = require("@hapi/boom");
 const { models } = require("./../../../libs/sequelize");
 const bcrypt = require("bcrypt");
+//upload image
+const cloudinary = require("./cloudinary.service");
+const multer = require("multer");
+const upload = multer({ dest: "./uploads" });
 
 // Create and Save a new Tutorial
 exports.create = async (req, res, next) => {
@@ -28,7 +32,7 @@ exports.findAllAdmin = async (req, res) => {
     const result = await models.User.findAll();
     res.send(result);
   } catch (error) {
-    next(error);
+    res.send(error.message);
   }
 };
 
@@ -55,11 +59,26 @@ exports.deleteOneUser = async (req, res) => {
 exports.update = async (req, res, next) => {
   const { id } = req?.params;
   const body = req?.body;
+  console.log(req.file);
+  // const img = req?.file;
+
+  const cloudUrl = await cloudinary.uploader
+    .upload(req.file.path)
+    .then((resp) => {
+      return resp.url;
+    })
+    .catch((err) => {
+      err.message;
+    });
+
+  // console.log(cloudUrl);
+
   if (body.password) {
     const passwordHashed = await bcrypt.hash(body.password, 10);
     const newData = {
       ...body,
       password: passwordHashed,
+      avatar: cloudUrl,
     };
     const user = await models.User.findByPk(id);
     if (user) {
@@ -76,10 +95,14 @@ exports.update = async (req, res, next) => {
     }
   } else {
     const user = await models.User.findByPk(id);
+    const newData = {
+      ...body,
+      avatar: cloudUrl,
+    };
     if (user) {
       try {
         const condition = { id: id };
-        const result = await user.update(body, condition);
+        const result = await user.update(newData, condition);
         delete result.dataValues.password;
         res.send(result);
       } catch (error) {
