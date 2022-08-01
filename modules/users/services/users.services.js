@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const cloudinary = require("./cloudinary.service");
 const multer = require("multer");
 const upload = multer({ dest: "./uploads" });
+const fs = require("fs");
 
 // Create and Save a new Tutorial
 exports.create = async (req, res, next) => {
@@ -71,6 +72,7 @@ exports.update = async (req, res, next) => {
       err.message;
     });
 
+  fs.unlinkSync(req.file.path);
   // console.log(cloudUrl);
 
   if (body.password) {
