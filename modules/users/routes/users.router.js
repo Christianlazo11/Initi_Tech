@@ -8,21 +8,10 @@ const cloudinary = require("../../users/services/cloudinary.config");
 const {
   createUsersSchema,
   updateUsersSchema,
-  getUsersSchema,
 } = require("../schemas/users.schema");
 const router = express.Router();
 
 router.post("/", validatorHandler(createUsersSchema, "body"), users.create);
-
-router.post("/upload", upload.single("avatar"), (req, res) => {
-  res.send("Subiendo Foto nuevamente...");
-  console.log(req.body);
-  console.log(req.file);
-  cloudinary.uploader
-    .upload(req.file.path)
-    .then((resp) => console.log(resp.url))
-    .catch((err) => console.log(err));
-});
 
 router.get(
   "/",
@@ -46,7 +35,6 @@ router.patch(
   "/:id",
   upload.single("avatar"),
   passport.authenticate("jwt", { session: false }),
-  // validatorHandler(getUsersSchema, "params"),
   validatorHandler(updateUsersSchema, "body"),
   users.update
 );

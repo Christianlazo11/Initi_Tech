@@ -49,6 +49,17 @@ exports.findOneUser = async (req, res) => {
 exports.deleteOneUser = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const user = await models.User.findByPk(id);
+    if (user.avatar_public_id) {
+      cloudinary.api.delete_resources(user.avatar_public_id, function (
+        error,
+        result
+      ) {
+        console.log(result, error);
+      });
+    }
+
     models.User.destroy({ where: { id: id } });
     res.send({ message: "user successfully deleted " });
   } catch (error) {
@@ -82,7 +93,14 @@ exports.update = async (req, res, next) => {
       avatar_public_id: cloudUrl.public_id,
     };
     const user = await models.User.findByPk(id);
-    // console.log(user.dataValues.avatar);
+    if (user.avatar || user.avatar_public_id) {
+      cloudinary.api.delete_resources(user.avatar_public_id, function (
+        error,
+        result
+      ) {
+        console.log(result, error);
+      });
+    }
     if (user) {
       try {
         const condition = { id: id };
@@ -97,7 +115,14 @@ exports.update = async (req, res, next) => {
     }
   } else {
     const user = await models.User.findByPk(id);
-    // console.log(user.dataValues.avatar);
+    if (user.avatar || user.avatar_public_id) {
+      cloudinary.api.delete_resources(user.avatar_public_id, function (
+        error,
+        result
+      ) {
+        console.log(result, error);
+      });
+    }
     const newData = {
       ...body,
       avatar: cloudUrl.url,
