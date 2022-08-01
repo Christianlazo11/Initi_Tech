@@ -79,6 +79,10 @@ const UsersSchema = {
     allowNull: true,
     type: DataTypes.STRING,
   },
+  avatar_public_id: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   dateActivation: {
     allowNull: true,
     type: DataTypes.DATE,

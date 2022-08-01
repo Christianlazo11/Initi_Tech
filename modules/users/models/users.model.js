@@ -50,6 +50,9 @@ module.exports = (sequelize, Sequelize) => {
     avatar: {
       type: Sequelize.STRING,
     },
+    avatar_public_id: {
+      type: Sequelize.STRING,
+    },
     date_activation: {
       type: Sequelize.DATE,
     },

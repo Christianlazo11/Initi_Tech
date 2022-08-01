@@ -3,7 +3,7 @@ const users = require("../services/users.services");
 const { validatorHandler } = require("../../../middlewares/validator.handler");
 const passport = require("passport");
 const upload = require("../../users/services/uploadImage");
-const cloudinary = require("../../users/services/cloudinary.service");
+const cloudinary = require("../../users/services/cloudinary.config");
 
 const {
   createUsersSchema,
@@ -47,7 +47,7 @@ router.patch(
   upload.single("avatar"),
   passport.authenticate("jwt", { session: false }),
   // validatorHandler(getUsersSchema, "params"),
-  // validatorHandler(updateUsersSchema, "body"),
+  validatorHandler(updateUsersSchema, "body"),
   users.update
 );
 

@@ -26,16 +26,16 @@ const createUsersSchema = Joi.object({
 });
 
 const updateUsersSchema = Joi.object({
-  id: id.required(),
+  id: id.allow(),
   document_type: document_type.allow(""),
   identification_number: identification_number.allow(""),
   email: email.allow(""),
   cellphone: cellphone.allow(""),
   role: role.allow(""),
   active: active.allow(""),
-  country: country.allow(""),
-  dev_level: dev_level.allow(""),
-  studies_level: studies_level.allow(""),
+  country: country.required(""),
+  dev_level: dev_level.required(""),
+  studies_level: studies_level.required(""),
   address: address.allow(""),
   user_name: user_name.allow(""),
   password: password.allow(""),

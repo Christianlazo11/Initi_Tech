@@ -3,9 +3,8 @@ const boom = require("@hapi/boom");
 const { models } = require("./../../../libs/sequelize");
 const bcrypt = require("bcrypt");
 //upload image
-const cloudinary = require("./cloudinary.service");
+const cloudinary = require("./cloudinary.config");
 const multer = require("multer");
-const upload = multer({ dest: "./uploads" });
 const fs = require("fs");
 
 // Create and Save a new Tutorial
@@ -60,29 +59,30 @@ exports.deleteOneUser = async (req, res) => {
 exports.update = async (req, res, next) => {
   const { id } = req?.params;
   const body = req?.body;
-  console.log(req.file);
-  // const img = req?.file;
 
   const cloudUrl = await cloudinary.uploader
     .upload(req.file.path)
     .then((resp) => {
-      return resp.url;
+      console.log(resp);
+      return resp;
     })
     .catch((err) => {
       err.message;
     });
 
+  //Delete Img from uploads
   fs.unlinkSync(req.file.path);
-  // console.log(cloudUrl);
 
   if (body.password) {
     const passwordHashed = await bcrypt.hash(body.password, 10);
     const newData = {
       ...body,
       password: passwordHashed,
-      avatar: cloudUrl,
+      avatar: cloudUrl.url,
+      avatar_public_id: cloudUrl.public_id,
     };
     const user = await models.User.findByPk(id);
+    // console.log(user.dataValues.avatar);
     if (user) {
       try {
         const condition = { id: id };
@@ -97,9 +97,11 @@ exports.update = async (req, res, next) => {
     }
   } else {
     const user = await models.User.findByPk(id);
+    // console.log(user.dataValues.avatar);
     const newData = {
       ...body,
-      avatar: cloudUrl,
+      avatar: cloudUrl.url,
+      avatar_public_id: cloudUrl.public_id,
     };
     if (user) {
       try {
