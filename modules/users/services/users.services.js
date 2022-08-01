@@ -9,21 +9,25 @@ const fs = require("fs");
 
 // Create and Save a new Tutorial
 exports.create = async (req, res, next) => {
-  const passwordHashed = await bcrypt.hash(req?.body?.password, 10);
-  const body = req?.body;
-  const result = await models.User.create({
-    ...body,
-    password: passwordHashed,
-  });
+  try {
+    const passwordHashed = await bcrypt.hash(req?.body?.password, 10);
+    const body = req?.body;
+    const result = await models.User.create({
+      ...body,
+      password: passwordHashed,
+    });
 
-  if (result) {
-    try {
-      sendEmail(result.email);
-      delete result.dataValues.password;
-      res.send(result);
-    } catch (error) {
-      next(error);
+    if (result) {
+      try {
+        sendEmail(result.email);
+        delete result.dataValues.password;
+        res.send(result);
+      } catch (error) {
+        next(error);
+      }
     }
+  } catch (error) {
+    res.status(409).json(error.errors[0].message);
   }
 };
 

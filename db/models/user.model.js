@@ -22,12 +22,12 @@ const UsersSchema = {
   identification_number: {
     allowNull: true,
     type: DataTypes.STRING,
-    unique: false,
+    unique: true,
   },
   email: {
     allowNull: false,
     type: DataTypes.STRING,
-    unique: false,
+    unique: true,
   },
   cellphone: {
     allowNull: true,
@@ -69,7 +69,7 @@ const UsersSchema = {
   user_name: {
     allowNull: true,
     type: DataTypes.STRING,
-    unique: false,
+    unique: true,
   },
   password: {
     allowNull: true,
